@@ -2,13 +2,15 @@ package trapdoor
 
 import "errors"
 
-// Key serialisation. Keys are stored as a small binary record so they can be
-// poop-encoded like everything else:
+// Key serialisation. Keys are stored as a small binary record and rendered
+// through internal/emojiset (ciphertext uses package poop; keys never do).
 //
 //	public:  "POOK" | version | len(N) u16 | N | len(E) u16 | E
-//	private: "POOS" | version | public record | len(D) u16 | D | len(P) u16 | P | len(Q) u16 | Q
+//	private: "POOS" | version | len(P) u16 | P | len(Q) u16 | Q | len(E) u16 | E
 //
-// Lambda is recomputed on load. Big-endian, minimal big.Int.Bytes() encoding.
+// The private record carries only P, Q and E: N, Lambda and D are recomputed
+// on load. Storing D and N as well would triple the emoji count for no gain.
+// Big-endian, minimal big.Int.Bytes() encoding.
 
 const (
 	publicMagic  = "POOK"
@@ -36,7 +38,7 @@ func (priv *PrivateKey) MarshalPrivate() []byte {
 	return nil
 }
 
-// UnmarshalPrivate parses a private key and recomputes Lambda.
+// UnmarshalPrivate parses a private key and recomputes N, Lambda and D.
 func UnmarshalPrivate(b []byte) (*PrivateKey, error) {
 	// TODO
 	return nil, ErrBadKeyEncoding

@@ -1,6 +1,6 @@
 // Command poocrypt is a thin CLI over the poocryption library.
 //
-//	poocrypt keygen [-bits N] -out NAME            # writes NAME.pub and NAME.key (poop-encoded)
+//	poocrypt keygen [-bits N] -out NAME            # writes NAME.pub and NAME.key as emoji strings
 //	poocrypt enc    -pub  FILE (-s STRING | -in FILE) [-out FILE]
 //	poocrypt dec    -priv FILE (-s POOP   | -in FILE) [-out FILE]
 //	poocrypt walk   -pub  FILE -x N -t STEPS        # demo: step x around the cycle t times
@@ -45,18 +45,20 @@ func usage() {
 }
 
 func runKeygen(args []string) error {
-	// TODO: poocryption.GenerateKey(bits); write poop.Encode(priv.MarshalPrivate())
-	// to NAME.key (0600) and poop.Encode(pub.MarshalPublic()) to NAME.pub
+	// TODO: poocryption.GenerateKey(bits); write emojiset.Encode(priv.MarshalPrivate())
+	// to NAME.key (0600) and emojiset.Encode(pub.MarshalPublic()) to NAME.pub
 	return fmt.Errorf("keygen not implemented")
 }
 
 func runEnc(args []string) error {
-	// TODO: load + decode public key, read -s or -in, poocryption.Encrypt, write output
+	// TODO: load key file, emojiset.Decode -> UnmarshalPublic; read -s or -in;
+	// poocryption.Encrypt; write output
 	return fmt.Errorf("enc not implemented")
 }
 
 func runDec(args []string) error {
-	// TODO: load + decode private key, read input, poocryption.Decrypt, write output
+	// TODO: load key file, emojiset.Decode -> UnmarshalPrivate; read input;
+	// poocryption.Decrypt; write output
 	return fmt.Errorf("dec not implemented")
 }
 
